@@ -1,0 +1,138 @@
+{%extends "Clientes/base.html"%}
+{%load static%}
+
+{%block links%} 
+    <link href="{%static 'Clientes/css/index.css'%}" rel="stylesheet">
+{%endblock%}
+
+{%block titulo%} Inicio {%endblock titulo%}
+{%block usuario_nombre%} {{usuario_nombre}} {%endblock usuario_nombre%}
+
+{%block content%}
+    <section class="main-section">
+        <h1>Mi Saldo</h1>
+        <div class="balance mb-5" id="balance-container">
+            <h2>{{saldo}}</h2>
+            <h2 class="d-none"><i class="bi bi-dot"></i><i class="bi bi-dot"></i><i class="bi bi-dot"></i><i class="bi bi-dot"></i><i class="bi bi-dot"></i><i class="bi bi-dot"></i></h2>
+            <i class="bi bi-eye" id="eye"></i>
+        </div>
+
+        <div class="container pb-5">
+            <h2 class="actions-title">Acciones Rápidas</h2>
+            <div class="row actions-container">
+                <div class="col-6 col-sm-4 col-lg-2 p-2">
+                    <a href="#">
+                        <div class="action">
+                            <img src="{%static 'Clientes/img/transferirIcon.svg'%}" alt="icono" />
+                            <p class="action-name">Transferir</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2 p-2">
+                    <a href="#">
+                        <div class="action">
+                            <img src="{%static 'Clientes/img/depositarIcon.svg'%}" alt="icono" />
+                            <p class="action-name">Depositar</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2 p-2">
+                    <a href="#">
+                        <div class="action">
+                            <img src="{%static 'Clientes/img/pagarIcon.svg'%}" alt="icono" />
+                            <p class="action-name">Pagar</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2 p-2">
+                    <a href="{%url 'Formulario'%}">
+                        <div class="action">
+                            <img src="{%static 'Clientes/img/prestamoIcon.svg'%}" alt="icono" />
+                            <p class="action-name">Préstamos</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2 p-2">
+                    <a href="#">
+                        <div class="action">
+                            <img src="{%static 'Clientes/img/invertirIcon.svg'%}" alt="icono" />
+                            <p class="action-name">Invertir</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2 p-2">
+                    <a href="#">
+                        <div class="action">
+                            <img src="{%static 'Clientes/img/masIcon.svg'%}" alt="icono" />
+                            <p class="action-name">Ver más</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="information-section container-fluid">
+        <!--Sección COTIZACIÓN DOLAR-->
+        <div class="row">
+            <div class="col-12">
+                <div class="home-card">
+                    <h2 class="home-card-title">Cotización Dolar</h2>
+                    <div class="container-fluid dolar-container p-4 d-flex flex-wrap justify-content-center overflow-auto" id="dolar">
+                        <!-- Aquí van las cards -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <div class="home-card">
+                    <h2 class="home-card-title">Tu última actividad</h2>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%for movimiento in movimientos%}
+                                <tr>
+                                    <td>{{movimiento.movement_datetime}}</td>
+                                    <td>{{movimiento.get_movement_type_display}}</td>
+                                    <td class="{%if movimiento.movement_type ==   'transf_env' or movimiento.movement_type == 'efectivo_eg' %} value-decrease {%else%} value-increase {%endif%}}">{{movimiento.monto_con_formato}}</td>
+                                </tr>
+                                {%endfor%}   
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="home-card-button-container">
+                        <a href="{%url 'Movimientos'%}" class="btn btn-primary">Ver Más <i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div id="cards-card" class="home-card">
+                    <h2 class="home-card-title">Tarjetas</h2>
+                    <div class="cards-container container-fluid d-flex align-items-center flex-column">
+                        <img class="img-fluid p-3" src="{%static 'Clientes/img/VisaCard.svg'%}" alt="Tarjeta VISA" />
+                        <img class="img-fluid p-3" src="{%static 'Clientes/img/MasterCard2.svg'%}" alt="Tarjeta Mastercard" />
+                    </div>
+                    <div class="home-card-button-container mt-4">
+                        <a href="{%url 'Tarjetas'%}" class="btn btn-primary">Ver Más <i class="bi bi-chevron-right"></i></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{%endblock content%}
+
+
+
+{%block scripts%}
+    <script src="{%static 'Clientes/js/index.js'%}"></script>
+{%endblock scripts%}

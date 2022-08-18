@@ -1,0 +1,24 @@
+{%extends "Clientes/base.html"%}
+{%load static%}
+{%block titulo%} Formulario {%endblock titulo%}
+{%block usuario_nombre%} {{usuario_nombre}} {%endblock usuario_nombre%}
+{%block links%} <link rel="stylesheet" href="{%static 'Clientes/css/index.css'%}"> 
+<link rel="stylesheet" href="{%static 'Prestamos/css/formulario.css'%}">
+{%endblock links%}
+{%block content%}
+<form action="" method="POST"> {%csrf_token%}
+<div class="container Formulario">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="card-title  text-center">Solicite una tarjeta</h5>
+      <p class="card-text  text-center">¡Obtén una tarjeta!</p>
+        <div class="">{{form.as_p}}</div>
+        <span class="text-danger">{{error_message}}</span>
+    </div>
+    <div class="card-footer">
+      <input type="submit" class="btn btn-primary w-100" value="Pedir">
+    </div>
+  </div>
+</div>
+</form>
+{%endblock content%}

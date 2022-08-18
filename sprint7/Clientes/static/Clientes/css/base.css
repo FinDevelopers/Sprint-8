@@ -1,0 +1,432 @@
+/* CONFIGURACIONES GENERALES */
+:root{
+    --primario: #3858FB;
+    --p75: #637BF5;
+    --p50: #8F9FF0;
+    --p25: #BAC1EB;
+    --po: #243DB9;
+    --blue: #2848EE;
+    --lilac: #D6DBFF;
+
+    --dark: #151515;
+    --dark2: #1B1B1B;
+    --dark3: #222222;
+    --dark4: #262626;
+    --dark5: #313131;
+    --grey: #4A4A4A;
+    --lightgrey: #D1D2D6;
+    --white: #FFFFFF;
+    --raro: #393f81;
+
+    /* BORDER RADIUS PREDEFINIDO */
+    --br: 1.5rem;
+}
+html {
+    box-sizing: border-box;
+    font-size:62.5% /*1rem = 10pixeles*/
+  }
+
+body{
+    overflow:hidden; /* Para evitar que se haga scroll en todo lo que está fuera del content*/
+    font-family: 'SF Pro Display', sans-serif; 
+    font-weight: 300;
+    color:var(--white);
+    font-size: 1.6rem;
+}
+.bg-primary{background-color: var(--primario)}
+
+/* SIDEBAR */
+#sidebar-container{
+    min-height: 100vh;
+    border-bottom-right-radius: 2rem;
+}
+
+#sidebar-container .logo{
+   padding: .875rem 1.25rem;
+}
+#sidebar-container .menu{
+    width: 22rem;
+}
+
+#sidebar-container .menu a{
+     text-decoration: none;
+     color: var(--white)
+}
+
+#sidebar-container .menu a:hover{
+   background-color: var(--po)
+}
+
+/* MODIFICANDO  DROPDOWN*/
+.dropdown-menu{
+    background-color: var(--primario);
+    border-radius: 1.5rem;
+}
+.dropdown-menu a{
+    color: var(--white);
+}
+.dropdown-menu a{
+    color: var(--white);
+    
+}
+.dropdown-menu a:hover{
+    background-color: var(--primario);
+    border-radius: var(--br);
+    color: var(--p25);
+}
+
+
+
+.first{
+    border-top-left-radius: var(--br);
+    border-top-right-radius : var(--br);
+}
+/* MENU EN EL CELULAR */
+.menu-celular{
+    background-color: var(--primario);
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--br);
+}
+.menu-celular a{ 
+    text-decoration: none;
+    color: var(--white);
+}
+.menu-celular a:hover{ 
+    background-color: var(--po);
+}
+.menu-celular .inicio:hover{
+    border-top-left-radius: var(--br);
+    border-top-right-radius: var(--br);
+}
+
+.menu-celular .transacciones:hover{ 
+    border-bottom-left-radius: var(--br);
+    border-bottom-right-radius:  var(--br);
+}
+
+
+@media (min-width: 676px) { 
+    .menu-celular{
+        display:none
+    }
+ }
+
+@media (max-width: 676px) { 
+    #sidebar-container{
+        display:none
+    }
+ }
+
+ @media (min-width: 992px) { 
+     .notificaciones{
+        width: 24rem;
+     }
+     .usuario{
+        width: 19rem;
+    }
+  }
+
+ /*------------FIN DEL MENÚ ----------- */
+
+ 
+ /* DONDE VA A IR EL CONTENDO --- Vamos a evitar que se haga scroll en el sidebar */
+
+ #content{
+    overflow-y:auto; /* Para dejar que se haga scroll en el contenido */
+    height: 100vh;
+    padding-bottom: 1.5rem;
+    background: var(--dark2);
+}
+
+#content a {
+    color: inherit;
+}
+
+/*MAIN SECTION*/
+.main-section{
+    display: block;
+    background: var(--raro);
+    border-bottom-left-radius: var(--br);
+    border-bottom-right-radius: var(--br);
+}
+
+.main-section h1{
+    text-align: center;
+    padding-top: 3rem;
+    font-size: 4rem;
+}
+
+.main-section .balance{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lilac);
+}
+
+.main-section .balance h2{
+    font-size: 5rem;
+    margin-right: 2rem;
+}
+
+.main-section .balance i{
+    font-size: 5rem;
+}
+
+.main-section .actions{
+    margin: 2rem 5rem;
+}
+
+.main-section .actions-title{
+    font-size: 3rem;
+    padding-left: 1rem;
+}
+
+.actions-container a{
+    text-decoration: none;
+}
+
+.actions-container .action{
+    background: var(--p75);
+    padding: .1rem;
+    width: 10rem;
+    height: 10rem;
+    border-radius: var(--br);
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.actions-container .action img{
+    width: 4rem;
+}
+
+
+/*INFORMATION SECTION*/
+.information-section{
+    margin-top:2rem; 
+}
+
+/*TABLE*/
+.home-card{
+    border-radius: var(--br);
+    background: var(--raro);
+    color: var(--white);
+    margin: 1rem;
+}
+
+.home-card-title{
+    padding: 1rem;
+    padding-left: 3rem;
+    font-size: 3rem;
+    border-bottom: 1px solid var(--white);
+}
+
+.table-container{
+    padding: 1rem 0;
+    
+}
+
+.table-container .table{
+    color: var(--lilac);
+}
+
+.table-container .table th, .table-container .table td{
+    padding-left: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    vertical-align:middle;
+    font-size: 1.6rem;
+}
+
+.home-card-button-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 2rem;
+}
+
+.home-card-button-container a{
+    background-color: var(--primario);
+    font-size: 2rem;
+    padding: 1rem 2rem;
+}
+
+.value-increase{
+    color: rgb(21, 207, 80);
+    font-weight: bold;
+}
+
+.value-decrease{
+    color: rgb(245, 3, 80);
+    font-weight: bold;
+}
+
+/*CARDS*/
+#cards-card{
+    margin-bottom: 5rem;
+}
+
+/*MEDIA QUERIES*/
+@media screen and (min-width: 1260px) {
+    .actions-container .action{
+        width: 17rem;
+        height: 17rem;
+    }
+
+    .actions-container .action img{
+        width: 9rem;
+    }
+    
+    .actions-container .action p{
+        font-size: 2.5rem;
+        line-height: 3rem;
+    }
+
+    /*INFORMATION SECTION*/
+    .table-container .table th, .table-container .table td{
+        font-size: 2.2rem;
+    }
+}
+
+
+@media screen and (min-width: 992px) and (max-width: 1260px) {
+    /*MAIN SECTION*/
+    .actions-container .action{
+        width: 13rem;
+        height: 13rem;
+    }
+
+    .actions-container .action img{
+        width: 7rem;
+    }
+    
+    .actions-container .action p{
+        font-size: 2rem;
+        line-height: 3rem;
+    }
+}
+
+
+@media screen  and (max-width: 992px) {
+    .actions-container .action{
+        width: 90%;
+        height: 14rem;
+    }
+
+    .actions-container .action img{
+        width: 7rem;
+    }
+    
+    .actions-container .action p{
+        font-size: 2rem;
+        line-height: 3rem;
+    }
+}
+
+@media screen  and (max-width: 430px) {
+    .main-section h1{
+        font-size: 3rem;
+    }
+    .main-section .balance h2{
+        font-size: 3.7rem;
+        margin-right: 1rem;
+    }
+    .main-section .balance i{
+        font-size: 3.7rem;
+    }
+}
+
+
+/*COTIZACION DOLAR*/
+#dolar{
+    max-height: 220px;
+    min-height: 207px;
+}
+
+#dolar .card{
+    display: inline-flex;
+    margin: 0 auto;
+    width: 20rem;
+    background-color: var(--p75);
+    color: var(--white) !important;
+    border-radius: var(--br);
+}
+
+#dolar .card .card-title{
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: underline;
+ }
+
+ #dolar .card .card-text b {
+    font-weight: bold;
+
+ }
+
+ #dolar .card .card-text i{
+    background-color: var(--white);
+    font-size: 1.5rem;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    margin-left: 6px;
+    font-weight: 1000;
+ }
+
+
+
+.rotado90 {
+    transform: rotate(90deg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Hola buenas*/
+

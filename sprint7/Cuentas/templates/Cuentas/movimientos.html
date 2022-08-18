@@ -1,0 +1,35 @@
+{%extends "Clientes/base.html"%}
+{%load static%}
+{%block titulo%} Movimientos {%endblock titulo%}
+{%block usuario_nombre%} {{usuario_nombre}} {%endblock usuario_nombre%}
+{%block links%} 
+    <link rel="stylesheet" href="{%static 'Clientes/css/index.css'%}"> 
+    <link rel="stylesheet" href="{%static 'Prestamos/css/formulario.css'%}">
+{%endblock links%}
+{%block content%}
+
+<div class="mt-5 px-3">
+    <div class="container-fluid prestamos">
+       <h1 class="text-center mb-3">Movimientos</h1>
+       <h2 class="text-success text-center mb-3c">{{success_message}}</h2>
+        <table class="table table-striped table-dark">
+            <thead class="thead-ligh">
+              <tr>
+                <th scope="col" class="text-uppercase">Fecha</th>
+                <th scope="col" class="text-uppercase">Descrpción</th>
+                <th scope="col" class="text-uppercase">Monto</th>
+              </tr>
+            </thead>
+            <tbody>
+                {%for movimiento in movimientos%}
+                    <tr>
+                        <td>{{movimiento.movement_datetime}}</td>
+                        <td>{{movimiento.get_movement_type_display}}</td>
+                        <td class="{%if movimiento.movement_type ==   'transf_env' or movimiento.movement_type == 'efectivo_eg' %} value-decrease {%else%} value-increase {%endif%}}">{{movimiento.monto_con_formato}}</td>
+                    </tr>
+                {%endfor%}   
+            </tbody>
+          </table>
+    </div>
+</div>
+{%endblock content%}

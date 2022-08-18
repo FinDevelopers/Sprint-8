@@ -1,0 +1,43 @@
+:root{
+    --text: #6A6D9E;
+    --primario: #3858FB;
+}
+
+.container{
+    width: 60%;
+}
+.card-body{
+    color: var(--text);
+}
+.card-title{
+    font-weight: bold;
+    color:var(--primario)
+}
+input, select{
+    border: 0;
+    outline: none;
+    color:var(--text);
+}
+.card-body input, .card-body select{
+    border: 1px solid #ccc;
+    padding: 12px;
+    border-radius: 3px;
+    width: 100%;
+}
+.card-body input:focus, .card-body select:focus{
+    border-color:var(--primario);
+}
+.card-footer{
+    background-color:#fff;
+}
+
+@media (max-width: 768px) {
+    .container{
+        width: 100%;
+    }
+}
+@media (max-width: 940px) {
+    .container{
+        width: 80%;
+    }
+}
