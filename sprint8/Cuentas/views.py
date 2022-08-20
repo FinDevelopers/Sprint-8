@@ -4,7 +4,9 @@ from .models import Cuenta
 from .serializers import CuentaSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -50,3 +52,16 @@ class cuentaDetail( APIView ):
         cuenta = Cuenta.objects.get(pk=pk)
         cuenta.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+class CuentaViewSet(viewsets.ModelViewSet):
+    queryset = Cuenta.objects.all()
+    serializer_class = CuentaSerializer
+    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @action(detail=False)
+    def cuentas_de_cliente(self, request):
+        cuentas = Cuenta.objects.filter(customer = request.user.cliente)
+        serializer = CuentaSerializer(cuentas, many=True)
+        return Response(serializer.data)

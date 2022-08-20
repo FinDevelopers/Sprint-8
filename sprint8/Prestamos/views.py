@@ -1,8 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+
+from Clientes.models import Empleado
 from .forms import PrestamoForm
 from .models import Prestamo
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from .serializers import PrestamoSerializer
+from rest_framework.response import Response
+from django.db.models.query import QuerySet
 
 
 
@@ -45,3 +52,27 @@ def prestamos(request):
     if request.GET.get('status','') == 'success':
         success_message = 'Préstamo añadido con éxito'
     return render(request, 'Prestamos/prestamos.html', {'usuario_nombre': usuario_nombre, 'prestamos': prestamos, 'success_message':success_message})
+
+
+
+class PrestamoViewSet(viewsets.ModelViewSet):
+    queryset = Prestamo.objects.all()
+    serializer_class = PrestamoSerializer
+    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @action(detail=False)
+    def prestamos_de_cliente(self, request):
+        prestamos = Prestamo.objects.filter(customer = request.user.cliente)
+        serializer = PrestamoSerializer(prestamos, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False)
+    def prestamos_de_sucursal(self, request):
+        #FALTA OBTENER REALMENTE EL EMPLEADO DE LA SESIÓN
+        empleado = Empleado.objects.get(pk=257)
+
+        prestamos = []
+        for cliente in empleado.branch.clientes.all():
+            prestamos = prestamos + list(cliente.prestamos.all())
+        serializer = PrestamoSerializer(prestamos, many=True)
+        return Response(serializer.data)

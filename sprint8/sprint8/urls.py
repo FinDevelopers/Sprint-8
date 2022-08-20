@@ -15,11 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from Clientes import views as clientes
 from Login import views as login
 from Prestamos import views as prestamos
 from Tarjetas import views as tarjetas
 from Cuentas import views as cuentas
+
+router = DefaultRouter()
+router.register(r'clientes', clientes.ClienteViewSet)
+router.register(r'cuentas-api', cuentas.CuentaViewSet)
+router.register(r'prestamos-api', prestamos.PrestamoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,5 +42,5 @@ urlpatterns = [
     path('cuentas/', cuentas.movimientos, name="Movimientos"),
     path('api/cuentas/', cuentas.cuentaLists.as_view(), name="API-Cuentas"),
     path('api/cuentas/<int:pk>/', cuentas.cuentaDetail.as_view(), name="API-Cuenta"),
-    
+    path('', include(router.urls)),
 ]

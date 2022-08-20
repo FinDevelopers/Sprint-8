@@ -66,6 +66,8 @@ class Empleado(models.Model):
     employee_dni = models.TextField(db_column='employee_DNI', verbose_name='DNI')  # Field name made lowercase.
     #Se eliminaron los empleados con id 0 para agregar la fK
     branch = models.ForeignKey(Sucursal, on_delete=models.CASCADE, verbose_name='sucursal', related_name='empleados')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name = 'Usuario', related_name='empleado')
+
 
     def nombre_completo(self):
         return f"{self.employee_name} {self.employee_surname}"
@@ -77,7 +79,7 @@ class Empleado(models.Model):
         managed = True
         db_table = 'empleado'
         verbose_name = 'Empleado'
-        verbose_name_plural = 'Empleados'
+        verbose_name_plural = 'Empleadosssss'
         ordering = ['employee_id']
 
     
