@@ -79,7 +79,7 @@ class Empleado(models.Model):
         managed = True
         db_table = 'empleado'
         verbose_name = 'Empleado'
-        verbose_name_plural = 'Empleadosssss'
+        verbose_name_plural = 'Empleados'
         ordering = ['employee_id']
 
     
