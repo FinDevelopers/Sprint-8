@@ -68,11 +68,8 @@ class PrestamoViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def prestamos_de_sucursal(self, request):
-        #FALTA OBTENER REALMENTE EL EMPLEADO DE LA SESIÓN
-        empleado = Empleado.objects.get(pk=257)
-
         prestamos = []
-        for cliente in empleado.branch.clientes.all():
+        for cliente in request.user.empleado.branch.clientes.all():
             prestamos = prestamos + list(cliente.prestamos.all())
         serializer = PrestamoSerializer(prestamos, many=True)
         return Response(serializer.data)
