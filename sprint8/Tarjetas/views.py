@@ -1,9 +1,23 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
+from .models import Tarjeta
 from .forms import TarjetaForm
 from datetime import datetime, timedelta
 import random
+from .serializers import TarjetaSerializer
 from django.urls import reverse
+from rest_framework import generics
+
+class tarjetaLists( generics.ListAPIView ):
+    serializer_class = TarjetaSerializer
+    # GET Obtener todos los datos
+    def get_queryset(self):
+        try:
+            return Tarjeta.objects.filter(customer = self.request.user.cliente, card_type = 'credit' )
+        except:
+            return []
+
 # Create your views here.
 @login_required(login_url='/login/')
 def tarjetas(request):

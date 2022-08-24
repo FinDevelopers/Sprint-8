@@ -5,13 +5,33 @@ from django.urls import reverse
 from Clientes.models import Empleado
 from .forms import PrestamoForm
 from .models import Prestamo
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, generics
 from rest_framework.decorators import action
 from .serializers import PrestamoSerializer
 from rest_framework.response import Response
 from django.db.models.query import QuerySet
 
 
+class prestamoSucursalLists( generics.ListAPIView ):
+    serializer_class = PrestamoSerializer
+    # GET Obtener todos los datos
+    def get_queryset(self):
+        try:
+            prestamos = []
+            for cliente in self.request.user.empleado.branch.clientes.all():
+                prestamos = prestamos + list(cliente.prestamos.all())
+            return prestamos
+        except:
+            return []
+
+class prestamoLists( generics.ListAPIView ):
+    serializer_class = PrestamoSerializer
+    # GET Obtener todos los datos
+    def get_queryset(self):
+        try:
+            return Prestamo.objects.filter(customer = self.request.user.cliente)
+        except:
+            return []
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -53,23 +73,3 @@ def prestamos(request):
         success_message = 'Préstamo añadido con éxito'
     return render(request, 'Prestamos/prestamos.html', {'usuario_nombre': usuario_nombre, 'prestamos': prestamos, 'success_message':success_message})
 
-
-
-class PrestamoViewSet(viewsets.ModelViewSet):
-    queryset = Prestamo.objects.all()
-    serializer_class = PrestamoSerializer
-    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    @action(detail=False)
-    def prestamos_de_cliente(self, request):
-        prestamos = Prestamo.objects.filter(customer = request.user.cliente)
-        serializer = PrestamoSerializer(prestamos, many=True)
-        return Response(serializer.data)
-
-    @action(detail=False)
-    def prestamos_de_sucursal(self, request):
-        prestamos = []
-        for cliente in request.user.empleado.branch.clientes.all():
-            prestamos = prestamos + list(cliente.prestamos.all())
-        serializer = PrestamoSerializer(prestamos, many=True)
-        return Response(serializer.data)

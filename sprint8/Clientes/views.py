@@ -1,10 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Cliente
-from .serializers import ClienteSerializer
+from .models import Cliente, Sucursal
+from .serializers import ClienteSerializer, SucursalSerializer
 from rest_framework.response import Response
-from rest_framework import status, viewsets
+from rest_framework import viewsets, generics
 from rest_framework.decorators import action
+
+class sucursalLists( generics.ListAPIView ):
+    serializer_class = SucursalSerializer
+    permission_classes = []
+    # GET Obtener todos los datos
+    def get_queryset(self):
+        return Sucursal.objects.all()
 
 
 # Create your views here.

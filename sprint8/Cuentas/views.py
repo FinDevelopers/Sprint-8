@@ -1,10 +1,11 @@
+from ast import Try
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Cuenta
 from .serializers import CuentaSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, viewsets
+from rest_framework import status, generics
 from rest_framework.decorators import action
 
 
@@ -16,20 +17,14 @@ def movimientos(request):
     movimientos = request.user.cliente.movimientos.all().order_by('-movement_datetime')
     return render(request, 'Cuentas/movimientos.html', {"usuario_nombre": usuario_nombre, "movimientos": movimientos})
 
-class cuentaLists( APIView ):
+class cuentaLists( generics.ListAPIView ):
+    serializer_class = CuentaSerializer
     # GET Obtener todos los datos
-    def get(self, request):
-        cuentas = Cuenta.objects.all()
-        serializer = CuentaSerializer(cuentas, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # POST Crear un nuevo registro
-    def post(self, request):
-        serializer = CuentaSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        try:
+            return Cuenta.objects.filter(customer = self.request.user.cliente)
+        except:
+            return []
 
 class cuentaDetail( APIView ):
     # GET Obtener un registro especifico
@@ -53,15 +48,3 @@ class cuentaDetail( APIView ):
         cuenta.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-
-class CuentaViewSet(viewsets.ModelViewSet):
-    queryset = Cuenta.objects.all()
-    serializer_class = CuentaSerializer
-    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    @action(detail=False)
-    def cuentas_de_cliente(self, request):
-        cuentas = Cuenta.objects.filter(customer = request.user.cliente)
-        serializer = CuentaSerializer(cuentas, many=True)
-        return Response(serializer.data)

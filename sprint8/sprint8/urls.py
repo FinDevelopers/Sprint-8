@@ -22,10 +22,9 @@ from Prestamos import views as prestamos
 from Tarjetas import views as tarjetas
 from Cuentas import views as cuentas
 
+
 router = DefaultRouter()
 router.register(r'clientes', clientes.ClienteViewSet)
-router.register(r'cuentas-api', cuentas.CuentaViewSet)
-router.register(r'prestamos-api', prestamos.PrestamoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,6 +40,9 @@ urlpatterns = [
     path('formulario-tarjeta/', tarjetas.formulario, name="Formulario-tarjeta"),
     path('cuentas/', cuentas.movimientos, name="Movimientos"),
     path('api/cuentas/', cuentas.cuentaLists.as_view(), name="API-Cuentas"),
-    path('api/cuentas/<int:pk>/', cuentas.cuentaDetail.as_view(), name="API-Cuenta"),
+    path('api/prestamos/', prestamos.prestamoLists.as_view(), name="API-Prestamos"),
+    path('api/prestamos-sucursal/', prestamos.prestamoSucursalLists.as_view(), name="API-Prestamos Sucursal"),
+    path('api/tarjetas/', tarjetas.tarjetaLists.as_view(), name="API-Tarjetas"),
+    path('api/sucursales/', clientes.sucursalLists.as_view(), name="API-Sucursales"),
     path('', include(router.urls)),
 ]
