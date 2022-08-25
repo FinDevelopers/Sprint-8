@@ -24,14 +24,11 @@ def index(request):
     return render(request, 'Clientes/index.html', {"usuario_nombre": usuario_nombre, "saldo": saldo, "movimientos": movimientos})
     
 
-class ClienteViewSet(viewsets.ModelViewSet):
-    queryset = Cliente.objects.all()
+class ClienteList(generics.ListAPIView):
     serializer_class = ClienteSerializer
-    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    @action(detail=False)
-    def cliente_de_usuario(self, request):
-        cliente = Cliente.objects.get(pk = request.user.cliente.customer_id)
-        serializer = ClienteSerializer(cliente)
-        return Response(serializer.data)
+    def get_queryset(self):
+        try:
+            return Cliente.objects.filter(pk = self.request.user.cliente.customer_id)
+        except:
+            return []
 
