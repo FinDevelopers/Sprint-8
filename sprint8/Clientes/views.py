@@ -31,4 +31,3 @@ class ClienteList(generics.ListAPIView):
             return Cliente.objects.filter(pk = self.request.user.cliente.customer_id)
         except:
             return []
-

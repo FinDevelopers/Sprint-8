@@ -5,33 +5,12 @@ from django.urls import reverse
 from Clientes.models import Empleado
 from .forms import PrestamoForm
 from .models import Prestamo
-from rest_framework import status, viewsets, generics
-from rest_framework.decorators import action
-from .serializers import PrestamoSerializer
-from rest_framework.response import Response
-from django.db.models.query import QuerySet
+from rest_framework import  generics
+from rest_framework.views import Response, status
+from .serializers import PrestamoSerializer, PrestamoSerializerInsert, PrestamoSerializerDestroy, serializers
 
 
-class prestamoSucursalLists( generics.ListAPIView ):
-    serializer_class = PrestamoSerializer
-    # GET Obtener todos los datos
-    def get_queryset(self):
-        try:
-            prestamos = []
-            for cliente in self.request.user.empleado.branch.clientes.all():
-                prestamos = prestamos + list(cliente.prestamos.all())
-            return prestamos
-        except:
-            return []
 
-class prestamoLists( generics.ListAPIView ):
-    serializer_class = PrestamoSerializer
-    # GET Obtener todos los datos
-    def get_queryset(self):
-        try:
-            return Prestamo.objects.filter(customer = self.request.user.cliente)
-        except:
-            return []
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -73,3 +52,55 @@ def prestamos(request):
         success_message = 'Préstamo añadido con éxito'
     return render(request, 'Prestamos/prestamos.html', {'usuario_nombre': usuario_nombre, 'prestamos': prestamos, 'success_message':success_message})
 
+class prestamoSucursalLists( generics.ListAPIView ):
+    serializer_class = PrestamoSerializer
+    # GET Obtener todos los datos
+    def get_queryset(self):
+        try:
+            prestamos = []
+            for cliente in self.request.user.empleado.branch.clientes.all():
+                prestamos = prestamos + list(cliente.prestamos.all())
+            return prestamos
+        except:
+            return []
+
+class prestamoLists( generics.ListAPIView ):
+    serializer_class = PrestamoSerializer
+    # GET Obtener todos los datos
+    def get_queryset(self):
+        try:
+            return Prestamo.objects.filter(customer = self.request.user.cliente)
+        except:
+            return []
+
+class prestamoCreate(generics.CreateAPIView):
+    serializer_class = PrestamoSerializerInsert
+
+    def post(self, request, *args, **kwargs):
+        try:
+            self.request.user.empleado
+            monto = float(request.data.get('loan_total')) * 100
+            request.data._mutable = True
+            request.data['loan_total'] = monto
+            return self.create(request, *args, **kwargs)
+        except:
+              return Response(serializers.Serializer().data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class prestamoDestroy(generics.DestroyAPIView):
+    serializer_class = PrestamoSerializerDestroy
+    queryset = []
+    """     
+    def delete(self, request, pk):
+        try:
+            self.request.user.empleado
+            prestamo = Prestamo.objects.get(pk=pk)
+            serializer = PrestamoSerializerDestroy(prestamo)
+            prestamo.delete()
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        except:
+              return Response(serializers.Serializer().data, status=status.HTTP_400_BAD_REQUEST)
+    """
+    def delete(self, request, *args, **kwargs):
+        print(self.destroy(request, *args, **kwargs))
+        return self.destroy(request, *args, **kwargs)

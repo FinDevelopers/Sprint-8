@@ -10,3 +10,8 @@ class PrestamoSerializerInsert(serializers.ModelSerializer):
     class Meta:
         model = Prestamo
         exclude = ['loan_id']
+
+class PrestamoSerializerDestroy(serializers.ModelSerializer):
+    class Meta:
+        model = Prestamo
+        fields = ['loan_id']
