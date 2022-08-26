@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
-from Clientes.models import Empleado
+from Clientes.models import Empleado, Cliente
 from .forms import PrestamoForm
 from .models import Prestamo
 from rest_framework import  generics
@@ -78,10 +78,20 @@ class prestamoCreate(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         try:
+            #Validando que el user sea empleado (si no es se produce una excepción)
             self.request.user.empleado
+            #Formateando el monto
             monto = float(request.data.get('loan_total')) * 100
+
+            #Setea el campo loan_total con el monto formateado
             request.data._mutable = True
             request.data['loan_total'] = monto
+
+            #Agregandole el monto a la cuenta
+            cuenta = Cliente.objects.get(pk = request.data['customer']).cuentas.get(account_type = 3)
+            cuenta.recibir_prestamo(monto)
+
+
             return self.create(request, *args, **kwargs)
         except:
               return Response(serializers.Serializer().data, status=status.HTTP_400_BAD_REQUEST)
@@ -89,18 +99,28 @@ class prestamoCreate(generics.CreateAPIView):
 
 class prestamoDestroy(generics.DestroyAPIView):
     serializer_class = PrestamoSerializerDestroy
-    queryset = []
-    """     
+
+     
     def delete(self, request, pk):
         try:
+            #Validando que el user sea empleado (si no es se produce una excepción)
             self.request.user.empleado
+
+            #Obteniendo el objeto prestamo con el paramtero de la url "pk"
             prestamo = Prestamo.objects.get(pk=pk)
             serializer = PrestamoSerializerDestroy(prestamo)
+
+            #Sacandole el monto del prestamo a al cuenta
+            
+            cuenta = prestamo.customer.cuentas.get(account_type = 3)
+            
+            cuenta.cancelar_prestamo(prestamo.loan_total)
+
+            #Eliminando el préstamo
             prestamo.delete()
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except:
-              return Response(serializers.Serializer().data, status=status.HTTP_400_BAD_REQUEST)
-    """
-    def delete(self, request, *args, **kwargs):
-        print(self.destroy(request, *args, **kwargs))
-        return self.destroy(request, *args, **kwargs)
+            return Response(serializers.Serializer().data, status=status.HTTP_400_BAD_REQUEST)
+    
+ 

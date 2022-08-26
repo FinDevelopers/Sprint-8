@@ -2,21 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .models import Tarjeta
+from Clientes.models import Cliente
 from .forms import TarjetaForm
 from datetime import datetime, timedelta
 import random
 from .serializers import TarjetaSerializer
 from django.urls import reverse
-from rest_framework import generics
+from rest_framework import generics, serializers
+from rest_framework.views import Response, status
 
-class tarjetaLists( generics.ListAPIView ):
-    serializer_class = TarjetaSerializer
-    # GET Obtener todos los datos
-    def get_queryset(self):
-        try:
-            return Tarjeta.objects.filter(customer = self.request.user.cliente, card_type = 'credit' )
-        except:
-            return []
 
 # Create your views here.
 @login_required(login_url='/login/')
@@ -46,3 +40,20 @@ def formulario(request):
             return redirect(reverse('Tarjetas')+'?status=success')
 
     return render(request, 'Tarjetas/formulario.html', {"usuario_nombre": usuario_nombre, "form": form})
+
+
+class tarjetaLists( generics.ListAPIView ):
+    serializer_class = TarjetaSerializer
+    # GET Obtener todos los datos
+    def get(self, request, pk):
+        try:
+            #Validando que el user sea empleado (si no es se produce una excepción)
+            self.request.user.empleado
+            
+            #Obteniendo las tarjetas del cliente
+            tarjetas =  Tarjeta.objects.filter(customer = Cliente.objects.get(pk=pk), card_type = 'credit' )
+            
+            serializer = TarjetaSerializer(tarjetas, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response(serializers.Serializer().data, status=status.HTTP_400_BAD_REQUEST)

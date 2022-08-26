@@ -35,13 +35,16 @@ urlpatterns = [
     path('tarjetas/', tarjetas.tarjetas, name="Tarjetas"),
     path('formulario-tarjeta/', tarjetas.formulario, name="Formulario-tarjeta"),
     path('cuentas/', cuentas.movimientos, name="Movimientos"),
+    path('api/clientes/', clientes.ClienteList.as_view(), name="API-Clientes"),
     path('api/cuentas/', cuentas.cuentaLists.as_view(), name="API-Cuentas"),
     path('api/prestamos/', prestamos.prestamoLists.as_view(), name="API-Prestamos"),
     path('api/prestamos-sucursal/', prestamos.prestamoSucursalLists.as_view(), name="API-Prestamos-Sucursal"),
-    path('api/prestamos-create/', prestamos.prestamoCreate.as_view(), name="API-Create-Sucursal"),
-    path('api/prestamos-destroy/<int:pk>/', prestamos.prestamoDestroy.as_view(), name="API-Destroy-Sucursal"),
-    path('api/tarjetas/', tarjetas.tarjetaLists.as_view(), name="API-Tarjetas"),
+    path('api/tarjetas/<int:pk>/', tarjetas.tarjetaLists.as_view(), name="API-Tarjetas"),
+    path('api/prestamos-create/', prestamos.prestamoCreate.as_view(), name="API-Prestamos-Create"),
+    path('api/prestamos-destroy/<int:pk>/', prestamos.prestamoDestroy.as_view(), name="API-Prestamos-Destroy"),
+    path('api/direccion-update-from-cliente/', clientes.direccionUpdateFromCliente.as_view(), name="API-Direcciones-Update-From-Empleado"),
+    path('api/direccion-update-from-empleado/<int:pk>/', clientes.direccionUpdateFromEmpleado.as_view(), name="API-Direcciones-Update-From-Empleado"),
     path('api/sucursales/', clientes.sucursalLists.as_view(), name="API-Sucursales"),
-    path('api/clientes/', clientes.ClienteList.as_view(), name="API-Clientes"),
 ]
+
 

@@ -27,7 +27,7 @@ class Tarjeta(models.Model):
     customer = models.ForeignKey(Cliente, models.CASCADE, verbose_name='cliente', related_name='tarjetas', null=True)
 
     def __str__(self):
-        return 'Tarjeta nro. ' + self.card_number
+        return 'Tarjeta nro. ' + str(self.card_number)
 
     class Meta:
         managed = True

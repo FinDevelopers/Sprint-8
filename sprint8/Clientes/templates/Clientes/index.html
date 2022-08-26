@@ -104,7 +104,7 @@
                                 <tr>
                                     <td>{{movimiento.movement_datetime}}</td>
                                     <td>{{movimiento.get_movement_type_display}}</td>
-                                    <td class="{%if movimiento.movement_type ==   'transf_env' or movimiento.movement_type == 'efectivo_eg' %} value-decrease {%else%} value-increase {%endif%}}">{{movimiento.monto_con_formato}}</td>
+                                    <td class="{%if movimiento.movement_type ==   'transf_env' or movimiento.movement_type == 'efectivo_eg' or movimiento.movement_type == 'prestamo_cancelar' %} value-decrease {%else%} value-increase {%endif%}}">{{movimiento.monto_con_formato}}</td>
                                 </tr>
                                 {%endfor%}   
                             </tbody>

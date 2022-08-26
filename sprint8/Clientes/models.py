@@ -47,6 +47,12 @@ class Cliente(models.Model):
     def nombre_completo(self):
         return f"{self.customer_name} {self.customer_surname}"
 
+    def cuentas_asociadas(self):
+        cuentas = []
+        for cuenta in list(self.cuentas.iterator()) :
+            cuentas.append(cuenta.account_type.act_name) 
+        return cuentas
+
     def __str__(self):
         return self.nombre_completo()
 

@@ -51,6 +51,11 @@ class Cuenta(models.Model):
         self.balance += monto
         self.save()
         Movimiento(movement_total=monto, movement_type='prestamo', customer=self.customer).save()
+    
+    def cancelar_prestamo(self,monto):
+        self.balance -= monto
+        self.save()
+        Movimiento(movement_total=monto, movement_type='prestamo_cancelar', customer=self.customer).save()
 
     def __str__(self):
         return f"Cuenta nro."+str(self.account_id)
@@ -65,7 +70,7 @@ class Cuenta(models.Model):
 class Movimiento(models.Model):
     movement_id = models.AutoField(primary_key=True, verbose_name='ID')
     movement_total = models.IntegerField(verbose_name='monto')
-    movement_type = models.TextField(verbose_name='tipo',choices=[('transf_recib','Transferencia Recibida'),('transf_env','Transferencia Enviada'),('efectivo_ing','Ingreso Efectivo'),('efectivo_eg','Egreso Efectivo'),('prestamo','Préstamo Recibido')])
+    movement_type = models.TextField(verbose_name='tipo',choices=[('transf_recib','Transferencia Recibida'),('transf_env','Transferencia Enviada'),('efectivo_ing','Ingreso Efectivo'),('efectivo_eg','Egreso Efectivo'),('prestamo','Préstamo Recibido'),('prestamo_cancelar','Préstamo Cancelado')])
     movement_datetime = models.DateTimeField(verbose_name='fecha', auto_now_add=True)
     customer = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='movimientos', verbose_name='cliente')
 
